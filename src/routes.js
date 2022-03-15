@@ -1,12 +1,10 @@
 import React from "react";
-import { Outlet } from "react-router";
-import Login from "./pages/Login";
+// import { Outlet } from "react-router";
 
 const routes = [
   {
     path: "/",
-    element: <Login />,
-    breadcrumb: "CMS",
+    element: <div>index</div>,
   },
 ];
 
