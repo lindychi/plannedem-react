@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "cra-template": "1.1.2",
+    "dayjs": "^1.11.0",
     "firebase": "^9.6.8",
     "postcss-import": "^14.0.2",
     "react": "^17.0.2",
