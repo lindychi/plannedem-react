@@ -165,6 +165,7 @@ function App() {
                         <button
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
                             onClick={(e) => onClickComplete(e, todo)}
+                            /* 반복되는 할일이 완료되었을 경우, 비활성화 다음 할일에서 관리하도록 한다. */
                             disabled={
                                 todo.complete === true &&
                                 todo.iterTodoId !== undefined
