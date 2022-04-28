@@ -158,46 +158,57 @@ function App() {
             />
             <button onClick={onClickAddTodo}>할 일 추가</button>
             <div style={{ display: "flex", flexDirection: "column" }}>
-                {todoList?.map((todo, index) => (
-                    <div
-                        key={`${index}`}
-                        className="flex flex-row items-center"
-                    >
-                        {todo.title}
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
-                            onClick={(e) =>
-                                onClickWorking(e, todo.id, todo.workArray)
-                            }
+                {todoList
+                    ?.filter(
+                        (todo) =>
+                            todo.complete === false ||
+                            todo.completedAt >=
+                                dayjs().subtract(1, "day").format()
+                    )
+                    .map((todo, index) => (
+                        <div
+                            key={`${index}`}
+                            className="flex flex-row items-center"
                         >
-                            {todo["workArray"] === undefined ? "시작" : "종료"}
-                        </button>
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
-                            onClick={(e) => onClickComplete(e, todo)}
-                            /* 반복되는 할일이 완료되었을 경우, 비활성화 다음 할일에서 관리하도록 한다. */
-                            disabled={
-                                todo.complete === true &&
-                                todo.iterTodoId !== undefined
-                            }
-                        >
-                            {todo?.complete === false ? "완료" : "미완료"}
-                        </button>
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
-                            onClick={(e) => onClickDelete(e, todo.id)}
-                        >
-                            삭제
-                        </button>
-                        <div className="flex flex-col">
-                            {todo?.workArray?.map((work, index) => (
-                                <div key={`workIndex${index}`}>
-                                    {work.start} ~ {work.end}
-                                </div>
-                            ))}
+                            {todo.title}
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+                                onClick={(e) =>
+                                    onClickWorking(e, todo.id, todo.workArray)
+                                }
+                            >
+                                {todo["workArray"] === undefined ||
+                                todo["workArray"][todo["workArray"].length - 1]
+                                    .end !== undefined
+                                    ? "시작"
+                                    : "종료"}
+                            </button>
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+                                onClick={(e) => onClickComplete(e, todo)}
+                                /* 반복되는 할일이 완료되었을 경우, 비활성화 다음 할일에서 관리하도록 한다. */
+                                disabled={
+                                    todo.complete === true &&
+                                    todo.iterTodoId !== undefined
+                                }
+                            >
+                                {todo?.complete === false ? "완료" : "미완료"}
+                            </button>
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+                                onClick={(e) => onClickDelete(e, todo.id)}
+                            >
+                                삭제
+                            </button>
+                            <div className="flex flex-col">
+                                {todo?.workArray?.map((work, index) => (
+                                    <div key={`workIndex${index}`}>
+                                        {work.start} ~ {work.end}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
             </div>
         </div>
     );
