@@ -29,10 +29,12 @@ function App() {
   };
   const onClickAddTodo = (e) => {
     e.preventDefault();
-    addDoc(collection(dbService, "todos"), {
-      title: todoTitle,
-      createdAt: dayjs().format(),
-    });
+    if (todoTitle.length > 0) {
+      addDoc(collection(dbService, "todos"), {
+        title: todoTitle,
+        createdAt: dayjs().format(),
+      });
+    }
     setTodoTitle("");
   };
   const onClickComplete = (e, todoId, todoComplete) => {
