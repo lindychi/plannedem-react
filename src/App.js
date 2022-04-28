@@ -100,6 +100,25 @@ function App() {
         }
     }, [todoList, user]);
 
+    useEffect(() => {
+        if (user) {
+            const unsub = onSnapshot(
+                query(
+                    collection(dbService, "iterTodos"),
+                    orderBy("createdAt", "desc"),
+                    where("user", "==", user.uid)
+                ),
+                (snapshot) => {
+                    const list = snapshot.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }));
+                    setIterTodoList(list);
+                }
+            );
+            return unsub;
+        }
+    }, [iterTodoList, user]);
 
     return user === null ? (
         <Login />
