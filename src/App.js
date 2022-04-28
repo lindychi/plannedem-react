@@ -69,6 +69,7 @@ function App() {
         updateDoc(doc(collection(dbService, "todos"), todo.id), {
             changedAt: dayjs().format(),
             complete: todo.complete === false ? true : false,
+            completedAt: todo.complete === false ? dayjs().format() : undefined,
         });
     };
     const onClickDelete = (e, todoId) => {
@@ -108,7 +109,8 @@ function App() {
                 query(
                     collection(dbService, "todos"),
                     orderBy("createdAt", "desc"),
-                    where("user", "==", user.uid)
+                    where("user", "==", user.uid),
+                    where("createdAt", "<=", dayjs().format())
                 ),
                 (snapshot) => {
                     const list = snapshot.docs.map((doc) => ({
