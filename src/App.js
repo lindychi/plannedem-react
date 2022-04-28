@@ -165,6 +165,10 @@ function App() {
                         <button
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
                             onClick={(e) => onClickComplete(e, todo)}
+                            disabled={
+                                todo.complete === true &&
+                                todo.iterTodoId !== undefined
+                            }
                         >
                             {todo?.complete === false ? "완료" : "미완료"}
                         </button>
