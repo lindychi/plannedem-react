@@ -24,6 +24,7 @@ function App() {
     const [todoTitle, setTodoTitle] = useState("");
 
     const [todoList, setTodoList] = useState([]);
+    const [iterTodoList, setIterTodoList] = useState([]);
 
     const onChangeTodoTitle = (e) => {
         e.preventDefault();
@@ -44,6 +45,19 @@ function App() {
     /* 업무 완료 처리를 진행하는 함수 */
     const onClickComplete = (e, todo) => {
         e.preventDefault();
+        /* 반복 할일일 경우에는 추가할일을 만드는 작업을 함께 처리해주어야한다. */
+        if (todo?.iterTodoId !== undefined && todo.complete === false) {
+            const iterTodo = iterTodoList.find((iter) => {
+                return iter.id === todo.iterTodoId;
+            });
+            addDoc(collection(dbService, "todos"), {
+                title: iterTodo.title,
+                createdAt: dayjs().format(),
+                complete: false,
+                user: user.uid,
+                iterTodoId: iterTodo.id,
+            });
+        }
         updateDoc(doc(collection(dbService, "todos"), todo.id), {
             changedAt: dayjs().format(),
             complete: todo.complete === false ? true : false,
