@@ -2,6 +2,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   orderBy,
@@ -43,6 +44,10 @@ function App() {
       changedAt: dayjs().format(),
       complete: todoComplete === false ? true : false,
     });
+  };
+  const onClickDelete = (e, todoId) => {
+    e.preventDefault();
+    deleteDoc(doc(collection(dbService, "todos"), todoId));
   };
   const onClickWorking = (e, todoId, todoWorkArray) => {
     e.preventDefault();
@@ -114,9 +119,15 @@ function App() {
             >
               {todo?.complete === false ? "미완료" : "완료"}
             </button>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+              onClick={(e) => onClickDelete(e, todo.id)}
+            >
+              삭제
+            </button>
             <div className="flex flex-col">
-              {todo?.workArray?.map((work) => (
-                <div>
+              {todo?.workArray?.map((work, index) => (
+                <div key={`workIndex${index}`}>
                   {work.start} ~ {work.end}
                 </div>
               ))}
