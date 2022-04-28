@@ -42,6 +42,7 @@ function App() {
         }
         setTodoTitle("");
     };
+
     /* 업무 완료 처리를 진행하는 함수 */
     const onClickComplete = (e, todo) => {
         e.preventDefault();
@@ -50,13 +51,20 @@ function App() {
             const iterTodo = iterTodoList.find((iter) => {
                 return iter.id === todo.iterTodoId;
             });
-            addDoc(collection(dbService, "todos"), {
-                title: iterTodo.title,
-                createdAt: dayjs().format(),
-                complete: false,
-                user: user.uid,
-                iterTodoId: iterTodo.id,
-            });
+            if (iterTodo) {
+                addDoc(collection(dbService, "todos"), {
+                    title: iterTodo.title,
+                    createdAt: dayjs()
+                        .add(iterTodo.iterValue, iterTodo.iterUnit)
+                        .format(),
+                    complete: false,
+                    user: user.uid,
+                    iterTodoId: iterTodo.id,
+                });
+            } else {
+                console.error(`'${iterTodo}'`, `'${todo.iterTodoId}'`);
+                return;
+            }
         }
         updateDoc(doc(collection(dbService, "todos"), todo.id), {
             changedAt: dayjs().format(),
