@@ -422,7 +422,7 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: none;
 }
 
-.translate-x-0, .translate-x-full, .-translate-x-0, .-translate-x-full, .transform {
+.-translate-x-0, .-translate-x-full, .transform {
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-rotate: 0;
@@ -525,16 +525,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 1.5rem;
 }
 
-.w-1\/2 {
-  width: 50%;
+.w-2\/3 {
+  width: 66.666667%;
 }
 
 .w-screen {
   width: 100vw;
-}
-
-.w-2\/3 {
-  width: 66.666667%;
 }
 
 .w-full {
@@ -547,18 +543,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .max-w-lg {
   max-width: 32rem;
-}
-
-.translate-x-0 {
-  --tw-translate-x: 0px;
-  -webkit-transform: var(--tw-transform);
-          transform: var(--tw-transform);
-}
-
-.translate-x-full {
-  --tw-translate-x: 100%;
-  -webkit-transform: var(--tw-transform);
-          transform: var(--tw-transform);
 }
 
 .-translate-x-0 {
@@ -650,12 +634,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 0.25;
 }
 
-.p-1 {
-  padding: 0.25rem;
-}
-
-.p-4 {
-  padding: 1rem;
+.p-2 {
+  padding: 0.5rem;
 }
 
 .p-10 {
@@ -689,14 +669,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   line-height: 1rem;
 }
 
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 .font-bold {

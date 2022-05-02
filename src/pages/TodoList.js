@@ -151,35 +151,46 @@ const TodoList = ({ user }) => {
                                     dayjs().subtract(1, "day").format())
                     )
                     .map((todo, index) => (
-                        <div
-                            key={`${index}`}
-                            className="flex flex-row items-center"
-                        >
-                            {todo.title}
-                            <Button
-                                onClick={(e) =>
-                                    onClickWorking(e, todo.id, todo.workArray)
-                                }
+                        <>
+                            <div
+                                key={`${index}`}
+                                className="flex flex-row items-center"
                             >
-                                {todo["workArray"] === undefined ||
-                                todo["workArray"][todo["workArray"].length - 1]
-                                    .end !== undefined
-                                    ? "시작"
-                                    : "종료"}
-                            </Button>
-                            <Button
-                                onClick={(e) => onClickComplete(e, todo)}
-                                /* 반복되는 할일이 완료되었을 경우, 비활성화 다음 할일에서 관리하도록 한다. */
-                                disabled={
-                                    todo.complete === true &&
-                                    todo.iterTodoId !== undefined
-                                }
-                            >
-                                {todo?.complete === false ? "완료" : "미완료"}
-                            </Button>
-                            <Button onClick={(e) => onClickDelete(e, todo.id)}>
-                                삭제
-                            </Button>
+                                {todo.title}
+                                <Button
+                                    onClick={(e) =>
+                                        onClickWorking(
+                                            e,
+                                            todo.id,
+                                            todo.workArray
+                                        )
+                                    }
+                                >
+                                    {todo["workArray"] === undefined ||
+                                    todo["workArray"][
+                                        todo["workArray"].length - 1
+                                    ].end !== undefined
+                                        ? "시작"
+                                        : "종료"}
+                                </Button>
+                                <Button
+                                    onClick={(e) => onClickComplete(e, todo)}
+                                    /* 반복되는 할일이 완료되었을 경우, 비활성화 다음 할일에서 관리하도록 한다. */
+                                    disabled={
+                                        todo.complete === true &&
+                                        todo.iterTodoId !== undefined
+                                    }
+                                >
+                                    {todo?.complete === false
+                                        ? "완료"
+                                        : "미완료"}
+                                </Button>
+                                <Button
+                                    onClick={(e) => onClickDelete(e, todo.id)}
+                                >
+                                    삭제
+                                </Button>
+                            </div>
                             <div className="flex flex-col">
                                 {todo?.workArray?.map((work, index) => (
                                     <div key={`workIndex${index}`}>
@@ -187,7 +198,7 @@ const TodoList = ({ user }) => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </>
                     ))}
             </div>
         </div>
