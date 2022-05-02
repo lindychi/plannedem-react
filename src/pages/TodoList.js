@@ -26,15 +26,17 @@ const TodoList = ({ user }) => {
     };
     const onClickAddTodo = (e) => {
         e.preventDefault();
+        const todoItem = {
+            title: todoTitle,
+            createdAt: dayjs().format(),
+            complete: false,
+            user: user.uid,
+        };
         if (todoTitle.length > 0) {
-            addDoc(collection(dbService, "todos"), {
-                title: todoTitle,
-                createdAt: dayjs().format(),
-                complete: false,
-                user: user.uid,
-            });
+            addDoc(collection(dbService, "todos"), todoItem);
         }
         setTodoTitle("");
+        setTodoList((prev) => [todoItem, ...prev]);
     };
     /* 업무 완료 처리를 진행하는 함수 */
     const onClickComplete = (e, todo) => {
@@ -68,6 +70,7 @@ const TodoList = ({ user }) => {
     const onClickDelete = (e, todoId) => {
         e.preventDefault();
         deleteDoc(doc(collection(dbService, "todos"), todoId));
+        setTodoList((prev) => prev.filter((value) => value.id !== todoId));
     };
     const onClickWorking = (e, todoId, todoWorkArray) => {
         e.preventDefault();
@@ -107,7 +110,7 @@ const TodoList = ({ user }) => {
             );
             return unsub;
         }
-    }, [todoList, user]);
+    }, [user]);
 
     useEffect(() => {
         if (user) {
