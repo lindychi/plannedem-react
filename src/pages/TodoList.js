@@ -13,6 +13,7 @@ import {
 import { dbService } from "../firebaseConfig";
 import dayjs from "dayjs";
 import Button from "../components/Button";
+import TodoItem from "../components/TodoItem";
 
 const TodoList = ({ user }) => {
     const [todoTitle, setTodoTitle] = useState("");
@@ -141,64 +142,39 @@ const TodoList = ({ user }) => {
                 value={todoTitle}
             />
             <Button onClick={onClickAddTodo}>할 일 추가</Button>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-                {todoList
-                    ?.filter(
-                        (todo) =>
-                            todo.complete === false ||
-                            (todo.completedAt !== undefined &&
-                                todo.completedAt >=
-                                    dayjs().subtract(1, "day").format())
-                    )
-                    .map((todo, index) => (
-                        <>
-                            <div
+            <div>
+                <div className="font-bold">수행중인 할일</div>
+            </div>
+            <div>
+                <div className="font-bold">남은 할일</div>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    {todoList
+                        ?.filter((todo) => todo.complete !== true)
+                        .map((todo, index) => (
+                            <TodoItem
                                 key={`${index}`}
-                                className="flex flex-row items-center"
-                            >
-                                {todo.title}
-                                <Button
-                                    onClick={(e) =>
-                                        onClickWorking(
-                                            e,
-                                            todo.id,
-                                            todo.workArray
-                                        )
-                                    }
-                                >
-                                    {todo["workArray"] === undefined ||
-                                    todo["workArray"][
-                                        todo["workArray"].length - 1
-                                    ].end !== undefined
-                                        ? "시작"
-                                        : "종료"}
-                                </Button>
-                                <Button
-                                    onClick={(e) => onClickComplete(e, todo)}
-                                    /* 반복되는 할일이 완료되었을 경우, 비활성화 다음 할일에서 관리하도록 한다. */
-                                    disabled={
-                                        todo.complete === true &&
-                                        todo.iterTodoId !== undefined
-                                    }
-                                >
-                                    {todo?.complete === false
-                                        ? "완료"
-                                        : "미완료"}
-                                </Button>
-                                <Button
-                                    onClick={(e) => onClickDelete(e, todo.id)}
-                                >
-                                    삭제
-                                </Button>
-                            </div>
-                            <div className="flex flex-col">
-                                {todo?.workArray?.map((work, index) => (
-                                    <div key={`workIndex${index}`}>
-                                        {work.start} ~ {work.end}
-                                    </div>
-                                ))}
-                            </div>
-                        </>
+                                todo={todo}
+                                index={index}
+                                onClickComplete={onClickComplete}
+                                onClickWorking={onClickWorking}
+                                onClickDelete={onClickDelete}
+                            />
+                        ))}
+                </div>
+            </div>
+            <div>
+                <div className="font-bold">완료한 할일</div>
+                {todoList
+                    ?.filter((todo) => todo.complete === true)
+                    .map((todo, index) => (
+                        <TodoItem
+                            key={`${index}`}
+                            todo={todo}
+                            index={index}
+                            onClickComplete={onClickComplete}
+                            onClickWorking={onClickWorking}
+                            onClickDelete={onClickDelete}
+                        />
                     ))}
             </div>
         </div>
