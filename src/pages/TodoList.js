@@ -149,7 +149,11 @@ const TodoList = ({ user }) => {
                 <div className="font-bold">남은 할일</div>
                 <div style={{ display: "flex", flexDirection: "column" }}>
                     {todoList
-                        ?.filter((todo) => todo.complete !== true)
+                        ?.filter(
+                            (todo) =>
+                                todo.complete === undefined ||
+                                todo.complete !== true
+                        )
                         .map((todo, index) => (
                             <TodoItem
                                 key={`${index}`}
@@ -165,7 +169,12 @@ const TodoList = ({ user }) => {
             <div>
                 <div className="font-bold">완료한 할일</div>
                 {todoList
-                    ?.filter((todo) => todo.complete === true)
+                    ?.filter(
+                        (todo) =>
+                            todo.complete === true &&
+                            todo.completedAt >=
+                                dayjs().subtract(1, "day").format()
+                    )
                     .map((todo, index) => (
                         <TodoItem
                             key={`${index}`}
