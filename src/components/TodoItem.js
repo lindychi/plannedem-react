@@ -14,6 +14,10 @@ const TodoItem = ({
     const [drop, setDrop] = useState(false);
 
     const getTimeString = (time) => {
+        if (time === undefined) {
+            return "";
+        }
+
         const secTime = time / 1000;
         if (secTime / (60 * 60 * 24) > 1) {
             return parseInt(secTime / (60 * 60 * 24)) + "일";
@@ -67,13 +71,23 @@ const TodoItem = ({
                         </div>
                     )}
                 </div>
-            </div>
-            <div className="flex flex-col">
-                {todo?.workArray?.map((work, index) => (
-                    <div key={`workIndex${index}`}>
-                        {work.start} ~ {work.end}
-                    </div>
-                ))}
+                <div className="pl-1 font-bold">
+                    {getTimeString(
+                        todo?.workArray?.reduce((prev, current) => {
+                            if ("end" in current) {
+                                return (
+                                    prev +
+                                    +dayjs(current.end).diff(current.start)
+                                );
+                            } else if ("start" in current) {
+                                /* 현재 진행중일 경우에 시작시간부터 현재 시간까지를 합함 */
+                                return prev + +dayjs().diff(current.start);
+                            } else {
+                                return prev;
+                            }
+                        }, 0)
+                    )}
+                </div>
             </div>
         </>
     );
