@@ -62,7 +62,8 @@ const TodoList = ({ user }) => {
                 return;
             }
         }
-        updateDoc(doc(collection(dbService, "todos"), todo.id), {
+
+        const updateData = {
             changedAt: dayjs().format(),
             complete:
                 todo.complete === undefined || todo.complete === false
@@ -72,7 +73,17 @@ const TodoList = ({ user }) => {
                 todo.complete === undefined || todo.complete === false
                     ? dayjs().format()
                     : "",
-        });
+        };
+
+        if (
+            todo.workArray !== undefined &&
+            "end" in todo.workArray[todo.workArray.length - 1] === false
+        ) {
+            todo.workArray[todo.workArray.length - 1].end = dayjs().format();
+            updateData["workArray"] = todo.workArray;
+        }
+
+        updateDoc(doc(collection(dbService, "todos"), todo.id), updateData);
     };
     const onClickDelete = (e, todoId) => {
         e.preventDefault();
