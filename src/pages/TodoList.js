@@ -64,8 +64,14 @@ const TodoList = ({ user }) => {
         }
         updateDoc(doc(collection(dbService, "todos"), todo.id), {
             changedAt: dayjs().format(),
-            complete: todo.complete === false ? true : false,
-            completedAt: todo.complete === false ? dayjs().format() : undefined,
+            complete:
+                todo.complete === undefined || todo.complete === false
+                    ? true
+                    : false,
+            completedAt:
+                todo.complete === undefined || todo.complete === false
+                    ? dayjs().format()
+                    : "",
         });
     };
     const onClickDelete = (e, todoId) => {
