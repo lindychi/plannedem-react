@@ -37,7 +37,7 @@ const TodoList = ({ user }) => {
             addDoc(collection(dbService, "todos"), todoItem);
         }
         setTodoTitle("");
-        setTodoList((prev) => [todoItem, ...prev]);
+        setTodoList((prev) => [...prev, todoItem]);
     };
     /* 업무 완료 처리를 진행하는 함수 */
     const onClickComplete = (e, todo) => {
@@ -128,7 +128,7 @@ const TodoList = ({ user }) => {
             const unsub = onSnapshot(
                 query(
                     collection(dbService, "todos"),
-                    orderBy("createdAt", "desc"),
+                    orderBy("createdAt", "asc"),
                     where("user", "==", user.uid),
                     where("createdAt", "<=", dayjs().format())
                 ),
