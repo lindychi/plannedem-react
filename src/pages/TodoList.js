@@ -144,6 +144,34 @@ const TodoList = ({ user }) => {
             <Button onClick={onClickAddTodo}>할 일 추가</Button>
             <div>
                 <div className="font-bold">수행중인 할일</div>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    {todoList
+                        ?.filter((todo) => {
+                            if (
+                                todo.workArray ===
+                                    undefined /* 진행도가 없거나 */ ||
+                                "end" in
+                                    todo.workArray[
+                                        todo.workArray.length - 1
+                                    ] ===
+                                    true /* 종료된 할 일인 경우 */
+                            ) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        })
+                        .map((todo, index) => (
+                            <TodoItem
+                                key={`${index}`}
+                                todo={todo}
+                                index={index}
+                                onClickComplete={onClickComplete}
+                                onClickWorking={onClickWorking}
+                                onClickDelete={onClickDelete}
+                            />
+                        ))}
+                </div>
             </div>
             <div>
                 <div className="font-bold">남은 할일</div>
