@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import dayjs from "dayjs";
+
 import Button from "./Button";
 
 const TodoItem = ({
@@ -10,6 +12,19 @@ const TodoItem = ({
     onClickDelete,
 }) => {
     const [drop, setDrop] = useState(false);
+
+    const getTimeString = (time) => {
+        const secTime = time / 1000;
+        if (secTime / (60 * 60 * 24) > 1) {
+            return parseInt(secTime / (60 * 60 * 24)) + "일";
+        } else if (secTime / 3600 > 1) {
+            return parseInt(secTime / (60 * 60)) + "시간";
+        } else if (secTime / 60 > 1) {
+            return parseInt(secTime / 60) + "분";
+        } else {
+            return parseInt(secTime) + "초";
+        }
+    };
 
     return (
         <>
@@ -23,6 +38,7 @@ const TodoItem = ({
                 ></div>
                 <div className="flex-col">
                     <div onClick={() => setDrop((prev) => !prev)}>
+                        {`${getTimeString(dayjs().diff(todo.createdAt))} `}
                         {todo.title}
                     </div>
                     {drop && (
