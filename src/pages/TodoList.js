@@ -125,7 +125,7 @@ const TodoList = ({ user }) => {
 
     useEffect(() => {
         if (user) {
-            const unsub = onSnapshot(
+            const unsubscribeTodos = onSnapshot(
                 query(
                     collection(dbService, "todos"),
                     orderBy("createdAt", "asc"),
@@ -140,13 +140,7 @@ const TodoList = ({ user }) => {
                     setTodoList(list);
                 }
             );
-            return unsub;
-        }
-    }, [user]);
-
-    useEffect(() => {
-        if (user) {
-            const unsub = onSnapshot(
+            const unsubscribeIterTodos = onSnapshot(
                 query(
                     collection(dbService, "iterTodos"),
                     orderBy("createdAt", "desc"),
@@ -160,9 +154,12 @@ const TodoList = ({ user }) => {
                     setIterTodoList(list);
                 }
             );
-            return unsub;
+            return () => {
+                unsubscribeTodos();
+                unsubscribeIterTodos();
+            };
         }
-    }, [iterTodoList, user]);
+    }, [user]);
 
     return (
         <div>
