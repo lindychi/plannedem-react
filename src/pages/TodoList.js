@@ -25,7 +25,7 @@ const TodoList = ({ user }) => {
         e.preventDefault();
         setTodoTitle(e.target.value);
     };
-    const onClickAddTodo = (e) => {
+    const onClickAddTodo = async (e) => {
         e.preventDefault();
         const todoItem = {
             title: todoTitle,
@@ -33,11 +33,19 @@ const TodoList = ({ user }) => {
             complete: false,
             user: user.uid,
         };
+
+        /* 공백의 할일을 추가할 수 없다. */
+        /* TODO: 트림 처리 후 길이를 측정해야 하지 않을까? */
+        const additionalInfo = {};
         if (todoTitle.length > 0) {
-            addDoc(collection(dbService, "todos"), todoItem);
+            const result = await addDoc(
+                collection(dbService, "todos"),
+                todoItem
+            );
+            additionalInfo["id"] = result.id;
         }
+        setTodoList((prev) => [...prev, { ...todoItem, ...additionalInfo }]);
         setTodoTitle("");
-        setTodoList((prev) => [...prev, todoItem]);
     };
     /* 업무 완료 처리를 진행하는 함수 */
     const onClickComplete = (e, todo) => {
