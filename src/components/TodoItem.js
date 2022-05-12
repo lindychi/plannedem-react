@@ -51,9 +51,10 @@ const TodoItem = ({
                             <Button
                                 role="menuitem"
                                 tabindex="-1"
-                                onClick={(e) =>
-                                    onClickWorking(e, todo.id, todo.workArray)
-                                }
+                                onClick={(e) => {
+                                    onClickWorking(e, todo.id, todo.workArray);
+                                    setDrop((prev) => !prev);
+                                }}
                             >
                                 {todo["workArray"] === undefined ||
                                 todo["workArray"][todo["workArray"].length - 1]
