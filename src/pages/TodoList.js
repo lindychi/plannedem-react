@@ -226,6 +226,9 @@ const TodoList = ({ user }) => {
                             todo.completedAt >=
                                 dayjs().subtract(1, "day").format()
                     )
+                    .sort((a, b) => {
+                        return a.completedAt > b.completedAt ? -1 : 1;
+                    })
                     .map((todo, index) => (
                         <TodoItem
                             key={`${index}`}
