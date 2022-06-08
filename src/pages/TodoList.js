@@ -136,7 +136,6 @@ const TodoList = ({ user }) => {
         let lastTodo = undefined;
         todoList.forEach((todo) => {
             if (todo.completedAt !== undefined) {
-                console.log(lastTodo, todo.completedAt);
                 if (lastTodo === undefined || lastTodo < todo.completedAt) {
                     lastTodo = todo.completedAt;
                 }
