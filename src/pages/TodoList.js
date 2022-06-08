@@ -12,8 +12,10 @@ import {
 } from "@firebase/firestore";
 import { dbService } from "../firebaseConfig";
 import dayjs from "dayjs";
+
 import Button from "../components/Button";
 import TodoItem from "../components/TodoItem";
+import { getTimeString } from "../util/toString";
 
 const TodoList = ({ user }) => {
     const [todoTitle, setTodoTitle] = useState("");
@@ -130,6 +132,29 @@ const TodoList = ({ user }) => {
             }
         });
     };
+    const getLastCompleteTime = () => {
+        let lastTodo = undefined;
+        todoList.forEach((todo) => {
+            if (todo.completedAt !== undefined) {
+                console.log(lastTodo, todo.completedAt);
+                if (lastTodo === undefined || lastTodo < todo.completedAt) {
+                    lastTodo = todo.completedAt;
+                }
+            }
+            if (todo.workArray !== undefined && todo.workArray.length > 0) {
+                if (
+                    lastTodo === undefined ||
+                    (todo.workArray[todo.workArray.length - 1].end !==
+                        undefined &&
+                        lastTodo <
+                            todo.workArray[todo.workArray.length - 1].end)
+                ) {
+                    lastTodo = todo.workArray[todo.workArray.length - 1].end;
+                }
+            }
+        });
+        return lastTodo;
+    };
 
     useEffect(() => {
         if (user) {
@@ -178,6 +203,13 @@ const TodoList = ({ user }) => {
                 value={todoTitle}
             />
             <Button onClick={onClickAddTodo}>할 일 추가</Button>
+            {getExecuteList().length <= 0 && (
+                <div>
+                    기억이 안나는 시간:
+                    {getLastCompleteTime() !== undefined &&
+                        getTimeString(dayjs().diff(getLastCompleteTime()))}
+                </div>
+            )}
             <div>
                 <div className="font-bold">수행중인 할일</div>
                 <div style={{ display: "flex", flexDirection: "column" }}>
